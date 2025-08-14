@@ -28,7 +28,7 @@ X_test_cut = X_test.apply(lambda x: " ".join(jieba.lcut(x)))
 # -- 2.2 使用CountVectorizer提取文本特征
 vector = CountVectorizer()
 X_train_vec = vector.fit_transform(X_train_cut) # .fit_transform() = .fit() + .transform()
-X_test_vec = vector.transform(X_test_cut) #对于测试集，就不能再用fit了，而是应该直接使用训练集fit出来的特征空间
+X_test_vec = vector.transform(X_test_cut) #Note: 对于测试集，就不能再用fit了，而是应该直接使用训练集fit出来的特征空间
 print(f"特征维度（词典大小）: {X_train_vec.shape[1]}")
 
 
@@ -69,16 +69,12 @@ def predict_category(text_input, vectorizer, classifier):
     text_cut = " ".join(jieba.lcut(text_input))
     text_vec = vectorizer.transform([text_cut])
     prediction = classifier.predict(text_vec)
-    # 4. 返回并打印结果
     predicted_label = prediction[0]
     print("-" * 20)
     print(f"输入文本: '{text_input}'")
     print(f"预测类别: {predicted_label}")
-
     return predicted_label
 
-
-# 示例句子
 sentence1 = "明天去北京的高铁票还有吗"
 sentence2 = "播放一首周杰伦的歌"
 sentence3 = "我想看一部吴京的动作电影"
@@ -86,7 +82,6 @@ print("--- 使用LR模型预测 ---")
 predict_category(sentence1, vector, model_LR)
 predict_category(sentence2, vector, model_LR)
 predict_category(sentence3, vector, model_LR)
-# 你也可以用同样的函数和KNN模型进行预测
 print("\n--- 使用KNN模型预测 ---")
 predict_category(sentence1, vector, model_KNN)
 predict_category(sentence2, vector, model_KNN)
